@@ -37,3 +37,5 @@ let car = {
 };
 
 car.start();
+
+// For next activity, how to filter in object using different functions
