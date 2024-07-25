@@ -17,8 +17,9 @@ let let (keywords not allowed, or the predefined variables names)
 const defaultRsult = 0;
 let currentResult = defaultRsult;
 
-currentResult = currentResult + 10;
+function add() {
+  currentResult = currentResult + userInput.value;
+  outputResult(currentResult, '');
+}
 
-let calculationDescription = `(${defaultRsult} + 10) * 3 / 2 - 1`;
-
-outputResult(currentResult, calculationDescription);
+addBtn.addEventListener('click', add);
