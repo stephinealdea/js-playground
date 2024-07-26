@@ -17,9 +17,44 @@ let let (keywords not allowed, or the predefined variables names)
 const defaultRsult = 0;
 let currentResult = defaultRsult;
 
+function getUserNumberInput() {
+  return parseInt(userInput.value);
+}
+
+function createAndWriteOutput(operator, resultBeforeCalc, calcNumber) {
+  const calcDescription = `${resultBeforeCalc} ${operator} ${calcNumber}`;
+  outputResult(currentResult, calcDescription);
+}
+
 function add() {
-  currentResult = currentResult + userInput.value;
-  outputResult(currentResult, '');
+  const inputVal = getUserNumberInput();
+  const initialResult = currentResult;
+  currentResult = currentResult + inputVal;
+  createAndWriteOutput('+', initialResult, inputVal);
+}
+
+function subtract() {
+  const inputVal = getUserNumberInput();
+  const initialResult = currentResult;
+  currentResult = currentResult - inputVal;
+  createAndWriteOutput('-', initialResult, inputVal);
+}
+
+function multiply() {
+  const inputVal = getUserNumberInput();
+  const initialResult = currentResult;
+  currentResult = currentResult * inputVal;
+  createAndWriteOutput('*', initialResult, inputVal);
+}
+
+function divide() {
+  const inputVal = getUserNumberInput();
+  const initialResult = currentResult;
+  currentResult = currentResult / inputVal;
+  createAndWriteOutput('/', initialResult, inputVal);
 }
 
 addBtn.addEventListener('click', add);
+subtractBtn.addEventListener('click', subtract);
+multiplyBtn.addEventListener('click', multiply);
+divideBtn.addEventListener('click', divide);
