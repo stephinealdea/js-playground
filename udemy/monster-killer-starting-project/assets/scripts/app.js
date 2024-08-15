@@ -24,7 +24,6 @@ let currentMonsterHealth = choseMaxLife;
 let currentPlayerHealth = choseMaxLife;
 let hasBonusLife = true;
 
-
 adjustHealthBars(choseMaxLife);
 
 function writeLog(ev, val, monsterHealth, playerhealth) {
@@ -35,7 +34,21 @@ function writeLog(ev, val, monsterHealth, playerhealth) {
         finalPlayerHealth: playerhealth
     };
 
-    
+    switch (ev) {
+        case LOG_EVENT_PLAYER_ATTACK: 
+            logEntry.target = 'MONSTER';
+            break;
+        case LOG_EVENT_PLAYER_STRONG_ATTACK:
+            logEntry.target = 'MONSTER';
+            break;
+        case LOG_EVENT_PLAYER_HEAL:
+            logEntry.target = 'PLAYER HEAL';
+            break;
+        case LOG_EVENT_GAME_OVER:
+            logEntry;
+            break;
+    }
+/*
     if (ev === LOG_EVENT_PLAYER_ATTACK) {
         logEntry.target = 'MONSTER';
     } else if (ev === LOG_EVENT_PLAYER_STRONG_ATTACK) {
@@ -45,7 +58,7 @@ function writeLog(ev, val, monsterHealth, playerhealth) {
     } else if (ev === LOG_EVENT_GAME_OVER) {
         logEntry;
     }
-
+*/
     battleLog.push(logEntry);
 }
 
@@ -161,8 +174,26 @@ function healPlayerHandler() {
 
 function printLogHandler() {
     console.log(battleLog);
+
+    for (let i = 0; i < battleLog.length; i++) {
+            console.log(battleLog[i]);
+    }
+
+    for (const logEntry of battleLog) {
+        console.log(logEntry);
+
+        for (const key in logEntry) {
+            console.log(key + ' : ' + logEntry[key]); 
+        }
+    }
 }
 
+const hobbies = ['Sports', 'Cooking', 'Coding'];
+let favoriteHobby;
+for (const hobby of hobbies) {
+    favoriteHobby = hobby;
+}
+console.log(favoriteHobby);
 attackBtn.addEventListener("click", attackHandler);
 strongAttackBtn.addEventListener("click", strongAttackHandler);
 healBtn.addEventListener('click', healPlayerHandler);
