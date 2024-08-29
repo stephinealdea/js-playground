@@ -11,13 +11,28 @@ const LOG_EVENT_MONSTER_ATTACK = 'MONSTER_ATTACK';
 const LOG_EVENT_PLAYER_HEAL = 'PLAYER_HEAL';
 const LOG_EVENT_GAME_OVER = 'GAME_OVER';
 
-const enteredValue = prompt('Maximum life for you and the monster', '100');
-
-let choseMaxLife = parseInt(enteredValue);
 let battleLog = [];
 
-if (isNaN(choseMaxLife) || choseMaxLife <= 0) {
+function getMaxLifeValues() {
+    const enteredValue = prompt('Maximum life for you and the monster', '100');
+
+    let parsedValue = parseInt(enteredValue);
+
+    if (isNaN(parsedValue) || parsedValue <= 0) {
+        throw { message: 'Invalid user input, not a number'}
+    }
+
+    return parsedValue;
+}
+
+let choseMaxLife;
+
+try {
+    choseMaxLife = getMaxLifeValues();
+} catch (error) {
+    console.log(error);
     choseMaxLife = 100;
+    alert('You entered somehting wrong, deafault value of 100 is used.');
 }
 
 let currentMonsterHealth = choseMaxLife;
@@ -118,15 +133,16 @@ function endRound() {
 }
 
 function attackMonster(mode) {
-    let maxDamage;
-    let logEvent;
-    if (mode === MODE_ATTACK) {
+    let maxDamage = mode === MODE_ATTACK ? ATTACK_VALUE : STRONG_ATTACK_VALUE;
+    let logEvent = mode === MODE_ATTACK ? LOG_EVENT_PLAYER_ATTACK : LOG_EVENT_PLAYER_STRONG_ATTACK;
+    
+    /*if (mode === MODE_ATTACK) {
         maxDamage = ATTACK_VALUE;
         logEvent = LOG_EVENT_PLAYER_ATTACK;
     } else if (mode === MODE_STRONG_ATTACK) {
         maxDamage = STRONG_ATTACK_VALUE;
         logEvent = LOG_EVENT_PLAYER_STRONG_ATTACK;
-    }
+    }*/
 
     const damage = dealMonsterDamage(maxDamage);
     currentMonsterHealth -= damage;
@@ -186,14 +202,27 @@ function printLogHandler() {
             console.log(key + ' : ' + logEntry[key]); 
         }
     }
+
+    // another example of loop with control label
+
+    let j = 0;
+    outerWhile: do {
+        console.log('Outer', j);
+
+         
+        innerFor: for (let k = 0; k < 5; k++) {
+            if (k === 3) {
+                break outerWhile;
+            }
+            console.log('Inner', k);
+        }
+        j++
+    } while (j < 3);
+
+    alert('Log printed, see console tab via inspect element');
 }
 
-const hobbies = ['Sports', 'Cooking', 'Coding'];
-let favoriteHobby;
-for (const hobby of hobbies) {
-    favoriteHobby = hobby;
-}
-console.log(favoriteHobby);
+
 attackBtn.addEventListener("click", attackHandler);
 strongAttackBtn.addEventListener("click", strongAttackHandler);
 healBtn.addEventListener('click', healPlayerHandler);
