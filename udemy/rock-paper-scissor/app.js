@@ -58,7 +58,7 @@ const getComputerChoice = function() {
   }
 };
 
-const getWinner = function(cChoice, pChoice) {
+const getWinner = function(cChoice, pChoice = DEFAULT_USER_CHOICE) {
   if (cChoice === pChoice) {
     return RESULT_DRAW;
   } else if (
@@ -73,7 +73,7 @@ const getWinner = function(cChoice, pChoice) {
 };
 
 
-startGameBtn.addEventListener('click', function(){
+startGameBtn.addEventListener('click', () => {
   if (gameIsRunning) {
     return;
   }
@@ -99,3 +99,62 @@ startGameBtn.addEventListener('click', function(){
   gameIsRunning = false; 
 });
 
+// Not related to the game
+// Handy info about having a rest parameters
+// callback function
+const sumUp = (resultHandler, ...numbers) => {
+  // another function exclusive to this function
+  const validateNumber = (number) => {
+    return isNaN(number) ? 0 : number;
+  }
+
+  let sum = 0;
+
+  for (const num of numbers) {
+    sum += validateNumber(num);
+  }
+
+  resultHandler(sum);
+};
+
+const subtractUp = (resultHandler, ...numbers) => {
+  let sum = 0;
+
+  for (const num of numbers) {
+    sum -= num;
+  }
+
+  resultHandler(sum);
+};
+
+const combine = (resultHandler, operator, ...numbers) => {
+  const validateNumber = (number) => {
+    return isNaN(number) ? 0 : number;
+  }
+  let sum = 0;
+
+  for (const num of numbers) {
+    if (operator === 'ADD') {
+      sum += validateNumber(num);
+    } else if (operator === 'SUBTRACT') {
+      sum -= validateNumber(num);
+    }
+  }
+
+  resultHandler(sum);
+};
+
+const showResult = (result) => {
+  alert('The result after adding all numbers is ' + result);
+};
+
+const showResultCombined = (messageText, result) => {
+  alert(messageText + ' ' + result);
+};
+
+sumUp(showResult, 1, 5, 'fsda', -3, 6, 10);
+
+subtractUp(showResult, 1, 5, 6, 10);
+
+combine(showResultCombined.bind(this, 'The result after adding all numbers is '), 'ADD', 1, 5, 6, 10);
+combine(showResultCombined.bind(this, 'The result after subtracting all numbers is '), 'SUBTRACT', 1, 5, 6, 10);
