@@ -28,7 +28,31 @@ const renderMovies = (filter = '') => {
     });
   }
 
+  // with object destructuring
   filteredMovies.forEach(movie => {
+    const movieEl = document.createElement('li');
+    // desctructure movie and get the title key
+    const { info } = movie;
+
+    // destructure the info obj and get the title key but assign a different variable name
+    //const { title: movieTitle } = info;
+
+    let { getFormattedTitle } = movie;
+
+    // binding the movie object to insure that it is what the specify target object to reference from the newMovie object 
+    getFormattedTitle = getFormattedTitle.bind(movie);
+
+    let text = getFormattedTitle() + ' - ';
+    for (const key in info) {
+      if (key !== 'title') {
+        text = text + `${key}: ${info[key]}`;
+      }
+    }
+    movieEl.textContent = text;
+    movieList.append(movieEl);
+  });
+
+  /*filteredMovies.forEach(movie => {
     const movieEl = document.createElement('li');
     let text = movie.info.title + ' - ';
     for (const key in movie.info) {
@@ -38,7 +62,7 @@ const renderMovies = (filter = '') => {
     }
     movieEl.textContent = text;
     movieList.append(movieEl);
-  });
+  });*/
 };
 
 const addMovieHandler = () => {
@@ -59,7 +83,10 @@ const addMovieHandler = () => {
       title,
       [extraName]: extraValue
     },
-    id: Math.random()
+    id: Math.random(),
+    getFormattedTitle: function() {
+      return this.info.title.toUpperCase();
+    }
   };
 
   movies.push(newMovie);
@@ -73,3 +100,36 @@ const searchMovieHandler = () => {
 
 addMovieBtn.addEventListener('click', addMovieHandler);
 searchBtn.addEventListener('click', searchMovieHandler);
+
+
+// side note with spread operators
+const person1 = {
+  name: 'Steph',
+  age: 30,
+  hobbies: ['Sports', 'Cooking']
+}
+
+// copying the object and override a value
+const person2 = {...person1, age: 29}
+
+const person3 = {...person1, hobbies: ['Badminton']}
+
+console.log('person1: ', person1);
+console.log('person2: ', person2);
+console.log('person2: ', person3);
+
+// side note about "this"
+
+
+const members = {
+  teamName: 'Gsix',
+  people: ['Steph', 'Camille'],
+  getTeamMembers: function() {
+    this.people.forEach((p) => {
+      console.log(p + ' - ' + this.teamName);
+    });
+  }
+};
+
+members.getTeamMembers();
+
